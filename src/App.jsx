@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,26 +15,44 @@ import Applications from "./pages/Applications";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
+import Chatbot from "@/components/Chatbot/Chatbot"; // Ensure this path is correct based on your project structure
+import IntroLoader from "@/components/IntroLoader";
+
 const queryClient = new QueryClient();
-const App = () => (<QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />}/>
-          <Route path="/login" element={<Login />}/>
-          <Route path="/register" element={<Register />}/>
-          <Route path="/dashboard" element={<Dashboard />}/>
-          <Route path="/services" element={<Services />}/>
-          <Route path="/category/:categoryId" element={<Category />}/>
-          <Route path="/service/:serviceId" element={<ServiceDetail />}/>
-          <Route path="/applications" element={<Applications />}/>
-          <Route path="/profile" element={<Profile />}/>
-          <Route path="/notifications" element={<Notifications />}/>
-          <Route path="*" element={<NotFound />}/>
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>);
+
+const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+
+        {/* Intro Loader */}
+        {isLoading && <IntroLoader onComplete={() => setIsLoading(false)} />}
+
+        <BrowserRouter>
+          <div className={`transition-opacity duration-1000 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/category/:categoryId" element={<Category />} />
+              <Route path="/service/:serviceId" element={<ServiceDetail />} />
+              <Route path="/applications" element={<Applications />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Chatbot />
+          </div>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
+
 export default App;
