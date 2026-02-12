@@ -30,34 +30,37 @@ const Header = () => {
       </Link>
 
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex items-center gap-6">
+      <nav className="hidden md:flex items-center gap-10">
         {isAuthenticated && (<>
-          <Link to="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/dashboard" id="dashboard-link" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
             {t('dashboard')}
           </Link>
-          <Link to="/services" className="text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/services" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
             {t('services')}
           </Link>
-          <Link to="/applications" className="text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/eligibility" id="eligibility-link" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+            Check Eligibility
+          </Link>
+          <Link to="/applications" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
             {t('myApplications')}
           </Link>
         </>)}
       </nav>
 
       {/* Global Search */}
-      <div className="hidden md:block mr-4">
+      <div className="hidden md:block mr-4" id="voice-search-input">
         <VoiceSearchInput />
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-4">
         {/* Language Selector */}
-        <div className="relative">
+        <div className="relative" id="language-selector">
           <Button variant="ghost" size="sm" onClick={() => setIsLangOpen(!isLangOpen)} className="gap-2">
             <Globe className="h-4 w-4" />
             <span className="hidden sm:inline">{languageNames[language]}</span>
           </Button>
-          {isLangOpen && (<div className="absolute right-0 mt-2 w-40 rounded-lg bg-card border shadow-soft py-2">
-            {Object.keys(languageNames).map((lang) => (<button key={lang} onClick={() => handleLanguageChange(lang)} className={`w-full px-4 py-2 text-left hover:bg-muted transition-colors ${language === lang ? 'text-primary font-medium' : 'text-foreground'}`}>
+          {isLangOpen && (<div className="absolute right-0 mt-2 w-48 rounded-lg bg-card/95 backdrop-blur border shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+            {Object.keys(languageNames).map((lang) => (<button key={lang} onClick={() => handleLanguageChange(lang)} className={`w-full px-4 py-2.5 text-sm text-left hover:bg-muted/50 transition-colors ${language === lang ? 'text-primary font-semibold bg-muted/30' : 'text-foreground'}`}>
               {languageNames[lang]}
             </button>))}
           </div>)}
@@ -65,22 +68,20 @@ const Header = () => {
 
         {isAuthenticated ? (<>
           <Link to="/notifications">
-            <Button variant="ghost" size="icon" className="relative">
+            <Button variant="ghost" size="icon" className="relative hover:bg-muted/60">
               <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground flex items-center justify-center">
-                2
-              </span>
+              <span className="absolute top-1.5 right-1.5 h-2.5 w-2.5 rounded-full bg-destructive ring-2 ring-card" />
             </Button>
           </Link>
           <Link to="/profile" className="hidden md:block">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="hover:bg-muted/60">
               <User className="h-5 w-5" />
             </Button>
           </Link>
-          <Button variant="ghost" size="icon" onClick={handleLogout} className="hidden md:flex">
+          <Button variant="ghost" size="icon" onClick={handleLogout} className="hidden md:flex hover:bg-destructive/10 hover:text-destructive">
             <LogOut className="h-5 w-5" />
           </Button>
-        </>) : (<div className="hidden md:flex gap-2">
+        </>) : (<div className="hidden md:flex gap-4">
           <Link to="/login">
             <Button variant="outline" size="sm">{t('login')}</Button>
           </Link>
@@ -108,6 +109,9 @@ const Header = () => {
           </Link>
           <Link to="/services" className="px-4 py-3 rounded-lg hover:bg-muted transition-colors" onClick={() => setIsMenuOpen(false)}>
             {t('services')}
+          </Link>
+          <Link to="/eligibility" className="px-4 py-3 rounded-lg hover:bg-muted transition-colors" onClick={() => setIsMenuOpen(false)}>
+            Check Eligibility
           </Link>
           <Link to="/applications" className="px-4 py-3 rounded-lg hover:bg-muted transition-colors" onClick={() => setIsMenuOpen(false)}>
             {t('myApplications')}
